@@ -92,6 +92,14 @@ app.get('/google/callback', (req, res) => {
   }
 });
 
+
+app.get('/logout', async (req, res) => {
+  isAuthenticated = false;
+  oauth2Client.revokeCredentials()
+  res.redirect('/');
+})
+
+
 app.post('/file/upload', (req, res) => {
   console.log("ulpoad route fired !")
   upload(req, res, (err) => {
