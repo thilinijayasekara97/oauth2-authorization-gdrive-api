@@ -134,6 +134,27 @@ app.post('/file/upload', (req, res) => {
   })
 });
 
+
+app.get('/file/download/:id', (req, res) => {
+  // if (req.body.token == null) return res.status(400).send('Token not found');
+  // oauth2Client.setCredentials(req.body.token);
+  const drive = google.drive({ version: 'v3', auth: oauth2Client });
+  var fileId = req.params.id;
+
+  drive.files.get({ fileId: fileId, alt: 'media' }, { responseType: 'stream' },
+      function (err, response) {
+          response.data
+              .on('end', () => {
+                  console.log('Done');
+              })
+              .on('error', err => {
+                  console.log('Error', err);
+              })
+              .pipe(res);
+      });
+});
+
+
 app.get('/image-list', (req, res) => {
 
   const drive = google.drive({ version: "v3", auth: oauth2Client });
