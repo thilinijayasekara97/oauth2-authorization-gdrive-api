@@ -92,6 +92,48 @@ app.get('/google/callback', (req, res) => {
   }
 });
 
+app.post('/file/upload', (req, res) => {
+  console.log("ulpoad route fired !")
+  upload(req, res, (err) => {
+    if (err){
+      console.log("upload error: ", err);
+      res.redirect('/')
+    }else{
+      if (req.file !== undefined){
+        console.log("image path: ", req.file.path)
+
+        const drive = google.drive({ version: "v3", auth: oauth2Client });
+        const fileMetadata = {
+          name: req.file.filename,
+          parents: [image_folder_id]
+        };
+        const media = {
+          mimeType: req.file.mimetype,
+          body: fs.createReadStream(req.file.path),
+        };
+        
+        drive.files.create(
+          {
+            resource: fileMetadata,
+            media: media,
+            fields: "id",
+          },
+          (err, file) => {
+            // oauth2Client.setCredentials(null);
+            if (err) return res.status(400).send(err);
+            fs.unlinkSync(req.file.path)
+            console.log('file uploaded successfully!')
+            res.render('userInfo', {userInfo, status: 'file uploaded successfully!'})
+          }
+        );
+      }else{
+        res.redirect('/')
+      }
+  
+    }
+  })
+});
+
 
 // app.get("/getAuthUrl", (req, res) => {
 //   const authURL = oauth2Client.generateAuthUrl({
