@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+
+</head>
+<body>
+    <div class="container mt-5 " style="max-width: 1140px;">
+        
+        <a href="/" class="btn btn-primary rounded-0 my-4 ">
+          <i class="bi bi-arrow-90deg-left"></i> Back to Home
+        </a>
+
+        <div class="mb-3 lead bg-secondary text-light p-2 rounded-0">Uploaded Image List fron Google Drive</div>
+
+        <div class="row">
+
+          <% if(typeof images !== 'undefined') { %>
+            <% images.map((image) => { %>
+
+              <div class="col col-md mb-2">
+                  <div class="card" style="width: 200px; height: 300px;">
+                    <a href="" class="btn-sm align-self-end m-1 position-fixed text-black"><i class="bi bi-x-circle-fill fw-bold"></i></a>
+                    <img src="/file/download/<%= image.id %>" class="card-img-top" style="max-height: 200px;" alt="<%= image.name %>">
+                    <div class="card-body">
+                      <h6 class="card-title"><%= image.name %></h6>
+                      <!-- <p class="card-text">This is a longer card with supporting text.</p> -->
+                    </div>
+                  </div>
+              </div>
+
+            <% }) %>
+          <% } %>
+
+        </div>
+        
+    </div>
+</body>
+</html>
