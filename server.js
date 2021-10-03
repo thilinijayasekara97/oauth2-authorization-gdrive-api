@@ -134,6 +134,35 @@ app.post('/file/upload', (req, res) => {
   })
 });
 
+app.get('/image-list', (req, res) => {
+
+  const drive = google.drive({ version: "v3", auth: oauth2Client });
+  drive.files.list(
+    {
+      pageSize: 10,
+      q: `'${image_folder_id}' in parents and trashed=false`
+    },
+    (err, response) => {
+      if (err) {
+        console.log("Error while read drive.. ", err);
+        return res.status(400).send(err);
+      }
+      const files = response.data.files;
+      // if (files.length) {
+      //   console.log("Files: ");
+      //   files.map((file) => {
+      //     console.log(`fileName: ${file.name} , fileId: ${file.id}`);
+      //   });
+      // } else {
+      //   console.log("No files found !");
+      // }
+      res.render('imageList', {images: files});
+    }
+  );
+
+})
+
+
 
 // app.get("/getAuthUrl", (req, res) => {
 //   const authURL = oauth2Client.generateAuthUrl({
